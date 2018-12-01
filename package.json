@@ -1,0 +1,25 @@
+{
+  "name": "@konojunya/node-twitter-share-server",
+  "version": "1.0.0",
+  "description": "画像生成の後、S3へアップロードするサーバー",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/HAL-Future-Creation-Exhibition/node-twitter-share-server.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/HAL-Future-Creation-Exhibition/node-twitter-share-server/issues"
+  },
+  "homepage": "https://github.com/HAL-Future-Creation-Exhibition/node-twitter-share-server#readme",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4"
+  }
+}
