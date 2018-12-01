@@ -1,6 +1,10 @@
 const express = require("express");
 const bodyParser = require('body-parser');
 const exec = require('child_process').exec;
+const axios = require("axios");
+const FormData = require('form-data');
+const fs = require("fs");
+const multer = require("multer");
 const app = express();
 
 // configure
@@ -17,17 +21,33 @@ app.use(function(req, res, next) {
   next();
 });
 
+const upload2S3 = async (id) => {
+  const fd = new FormData();
+  const buffer = fs.readFileSync(`official-${id}.png`);
+  fd.append("file", buffer, {
+    filename: `${id}.png`,
+    contentType: "image/png",
+    knownLength: buffer.length
+  });
+  return await axios.post(`http://133.167.127.211:8080/upload?path=official-${id}.png`, fd, {
+    headers: fd.getHeaders()
+  });
+}
+
 app.post("/share", (req, res) => {
   const { id, name, icon } = req.body;
-  exec(`python main.py ${name} ${icon} ${id}.png`, err => {
+  exec(`python main.py ${name} ${icon} official-${id}.png`, async (err) => {
     if(err) {
       res.json({
         err
       });
     }
-    exec(`rm -rf ${id}.png`);
+
+    await upload2S3(id);
+
+    exec(`rm -rf official-${id}.png`);
     res.json({
-      url: `https://hogehoge.com`
+      url: `https://s3-us-west-2.amazonaws.com/dinner-match/nellow/official-${id}.png`
     })
   });
 })
